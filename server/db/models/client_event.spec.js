@@ -56,11 +56,47 @@ describe('Client Events model', () => {
       }))
     })
 
-    it('returns the browser of the user based on the userAgent value', async () => {
+    it('returns Firefox if userAgent contains Firefox', async () => {
       const userOne = await ClientEvent.findOne({
         where: { userId: 1 }
       })
       expect(userOne.browser).to.be.equal('Firefox')
     })
+
+    it('returns Chrome if userAgent contains Chrome but not OPR', async () => {
+      const userOne = await ClientEvent.findOne({
+        where: { userId: 2 }
+      })
+      expect(userOne.browser).to.be.equal('Chrome')
+    })
+
+    it('returns Opera if userAgent contains OPR', async () => {
+      const userOne = await ClientEvent.findOne({
+        where: { userId: 3 }
+      })
+      expect(userOne.browser).to.be.equal('Opera')
+    })
+
+    it('returns Safari if userAgent contains Safari but not Chrome', async () => {
+      const userOne = await ClientEvent.findOne({
+        where: { userId: 4 }
+      })
+      expect(userOne.browser).to.be.equal('Safari')
+    })
+
+    it('returns Internet Explorer if userAgent contains Windows', async () => {
+      const userOne = await ClientEvent.findOne({
+        where: { userId: 5 }
+      })
+      expect(userOne.browser).to.be.equal('Internet Explorer')
+    })
+
+    it('returns Internet Explorer if userAgent contains Microsoft', async () => {
+      const userOne = await ClientEvent.findOne({
+        where: { userId: 6 }
+      })
+      expect(userOne.browser).to.be.equal('Bot')
+    })
+
   })
 })

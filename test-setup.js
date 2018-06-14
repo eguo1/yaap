@@ -10,3 +10,7 @@ enzyme.configure({adapter})
 beforeEach(() => {
   return db.sync({ force: true })
 })
+
+afterEach(() => {
+  return db.sync({ force: true })
+})

@@ -57,10 +57,6 @@ describe('Client Events model', () => {
       }))
     })
 
-    afterEach(() => {
-      return db.sync({ force: true })
-    })
-
     it('returns Firefox if userAgent contains Firefox', async () => {
       const userOne = await ClientEvent.findOne({
         where: { userId: 1 }

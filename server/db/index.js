@@ -1,6 +1,7 @@
-const db = require('./db')
+'use strict'
 
-// register models
+const { db } = require('./db')
+
 require('./models')
 
-module.exports = db
+module.exports.db = db

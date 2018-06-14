@@ -1,6 +1,8 @@
+'use strict'
+
 import React from 'react'
 
-import {Navbar} from './components'
+import { Navbar } from './components'
 
 const App = () => {
   return (

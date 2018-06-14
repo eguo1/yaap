@@ -8,5 +8,5 @@ const adapter = new Adapter()
 enzyme.configure({adapter})
 
 beforeEach(() => {
-  return db.sync({force: true})
+  return db.sync({ force: true })
 })

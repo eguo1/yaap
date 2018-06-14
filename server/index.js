@@ -8,15 +8,13 @@ const { db } = require('./db')
 const PORT = process.env.PORT || 3030
 const app = express()
 
-module.exports = app
-
 const createApp = () => {
   app.use(morgan('dev'))
 
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({ extended: true }))
 
-  app.use('/api', require('./api').router)
+  app.use('/api', require('./api'))
 
   app.use(express.static(path.join(__dirname, '..', 'public')))
 
@@ -49,7 +47,9 @@ const createApp = () => {
 }
 
 const startListening = () => {
-  app.listen(PORT, () => console.log(`We're live on port ${PORT}!`))
+  if(!module.parent) {
+    app.listen(PORT, () => console.log(`We're live on port ${PORT}!`))
+  }
 }
 
 const syncDb = () => db.sync()
@@ -57,3 +57,5 @@ const syncDb = () => db.sync()
 syncDb()
   .then(createApp)
   .then(startListening)
+
+  module.exports = app

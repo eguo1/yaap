@@ -2,6 +2,7 @@
 
 const { expect } = require('chai')
 const { ClientEvent } = require('./client_event')
+const { db } = require('../db')
 
 const fakeEvents = [{
   type: 'click',
@@ -54,6 +55,10 @@ describe('Client Events model', () => {
       return Promise.all(fakeEvents.map(fakeEvent => {
         return ClientEvent.create({...fakeEvent})
       }))
+    })
+
+    afterEach(() => {
+      return db.sync({ force: true })
     })
 
     it('returns Firefox if userAgent contains Firefox', async () => {

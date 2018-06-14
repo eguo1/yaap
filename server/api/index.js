@@ -1,7 +1,9 @@
 'use strict'
 
 const router = require('express').Router()
-module.exports.router = router
+module.exports = router
+
+router.use('/events', require('./client_events'))
 
 router.use((req, res, next) => {
   const error = new Error('Not found')

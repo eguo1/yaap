@@ -1,5 +1,6 @@
 'use strict'
 
+const { expect } = require('chai')
 const { ClientEvent } = require('./client_event')
 
 const fakeEvents = [{
@@ -46,8 +47,8 @@ const fakeEvents = [{
   userId: 6
 }]
 
-describe('Client Events model', function () {
-  describe('Browser method', function () {
+describe('Client Events model', () => {
+  describe('Browser method', () => {
 
     beforeEach(() => {
       return Promise.all(fakeEvents.map(fakeEvent => {
@@ -55,8 +56,11 @@ describe('Client Events model', function () {
       }))
     })
 
-    it('returns the browser of the user based on the userAgent value', function () {
-
+    it('returns the browser of the user based on the userAgent value', async () => {
+      const userOne = await ClientEvent.findOne({
+        where: { userId: 1 }
+      })
+      expect(userOne.browser).to.be.equal('Firefox')
     })
   })
 })

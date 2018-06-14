@@ -22,6 +22,14 @@ const ClientEvent = db.define('client_event', {
   userId: {
     type: Sequelize.INTEGER
   }
+}, {
+  getterMethods: {
+    browser() {
+      if (this.userAgent.includes('Firefox')) {
+        return 'Firefox'
+      }
+    }
+  }
 })
 
 module.exports.ClientEvent = ClientEvent

@@ -46,7 +46,7 @@ const ClientEvent = db.define('client_event', {
 })
 
 ClientEvent.hook('beforeValidate', (clientEvent) => {
-  const reformattedIp = clientEvent.ip.slice(8)
+  const reformattedIp = clientEvent.ip.slice(7)
   clientEvent.ip = reformattedIp
 })
 

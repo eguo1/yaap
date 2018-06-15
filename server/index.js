@@ -50,7 +50,7 @@ const startListening = () => {
   app.listen(PORT, () => console.log(`We're live on port ${PORT}!`))
 }
 
-const syncDb = () => db.sync()
+const syncDb = () => db.sync({ force: true })
 
 if (require.main === module) {
   syncDb()

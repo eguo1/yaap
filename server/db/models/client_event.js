@@ -21,6 +21,9 @@ const ClientEvent = db.define('client_event', {
   },
   userId: {
     type: Sequelize.INTEGER
+  },
+  ip: {
+    type: Sequelize.STRING
   }
 }, {
   getterMethods: {

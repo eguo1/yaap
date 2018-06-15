@@ -19,11 +19,8 @@ describe('Client Events routes', () => {
       userId: 1
     }
 
-    beforeEach(() => {
-      return ClientEvent.create({...fakeEvent})
-    })
-
-    it('GET /api/events returns an array of events', () => {
+    it('GET /api/events returns an array of events', async () => {
+      await ClientEvent.create(fakeEvent)
       return request(app)
         .get('/api/events')
         .expect(200)
@@ -33,13 +30,25 @@ describe('Client Events routes', () => {
         })
     })
 
-    it('GET /api/events/:eventId returns a single event', () => {
+    it('GET /api/events/:eventId returns a single event', async () => {
+      await ClientEvent.create(fakeEvent)
       return request(app)
         .get('/api/events/1')
         .expect(200)
         .then(res => {
           expect(res.body).to.be.an('object')
           expect(res.body.browser).to.be.equal('Firefox')
+        })
+    })
+
+    it('POST /api/events adds a new event', () => {
+      return request(app)
+        .post('/api/events')
+        .send(fakeEvent)
+        .expect(201)
+        .then(res => {
+          expect(res.body).to.be.an('object')
+          expect(res.body.type).to.be.equal('click')
         })
     })
   })

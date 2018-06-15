@@ -85,14 +85,14 @@ describe('Client Events model', () => {
       expect(userOne.browser).to.be.equal('Safari')
     })
 
-    it('returns Internet Explorer if userAgent contains Windows', async () => {
+    it('returns Internet Explorer if userAgent contains MSIE', async () => {
       const userOne = await ClientEvent.findOne({
         where: { userId: 5 }
       })
       expect(userOne.browser).to.be.equal('Internet Explorer')
     })
 
-    it('returns Bot if userAgent doesn\'t contain any of the above', async () => {
+    it('returns Bot if userAgent contains bot', async () => {
       const userOne = await ClientEvent.findOne({
         where: { userId: 6 }
       })

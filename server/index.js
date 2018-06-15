@@ -47,15 +47,17 @@ const createApp = () => {
 }
 
 const startListening = () => {
-  if(!module.parent) {
-    app.listen(PORT, () => console.log(`We're live on port ${PORT}!`))
-  }
+  app.listen(PORT, () => console.log(`We're live on port ${PORT}!`))
 }
 
 const syncDb = () => db.sync()
 
-syncDb()
-  .then(createApp)
-  .then(startListening)
+if (require.main === module) {
+  syncDb()
+    .then(createApp)
+    .then(startListening)
+} else {
+  createApp()
+}
 
-  module.exports = app
+module.exports = app

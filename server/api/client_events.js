@@ -18,7 +18,7 @@ router.get('/:eventId', (req, res, next) => {
 
 router.post('/', (req, res, next) => {
   const { type, page, target, time, userAgent, userId } = req.body
-  const ip = req.connection.remoteAddres.slice(8)
+  const ip = req.connection.remoteAddress
   ClientEvent.create({ type, page, target, time, userAgent, userId, ip })
     .then(event => res.status(201).json(event))
     .catch(next)

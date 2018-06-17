@@ -31,35 +31,35 @@ router.post('/', (req, res, next) => {
     .catch(next)
 })
 
-router.post('/latest', (req, res, next) => {
-  const { latestFetch } = req.body
-  ClientEvent.findAll({
-    where: {
-      createdAt: {
-        [Op.lte]: latestFetch,
-        [Op.gt]: sixtySecCheck(latestFetch)
-      }
-    }
-  })
-    .then(events => {
-      return events.map(event => {
-        const timeElapsed = event.timeData(latestFetch)
-        return {
-          id: event.id,
-          type: event.type,
-          timeElapsed
-        }
-      })
-    })
-    .then(events => {
-      const response = { events }
-      const lastTime = (new Date(latestFetch)).getTime()
-      const updatedTime = (new Date(lastTime + 1000)).toISOString()
-      response.latestFetch = updatedTime.replace('T', ' ').replace('Z', '') + '+00'
-      res.json(response)
-    })
-    .catch(next)
-})
+// router.post('/latest', (req, res, next) => {
+//   const { latestFetch } = req.body
+//   ClientEvent.findAll({
+//     where: {
+//       createdAt: {
+//         [Op.lte]: latestFetch,
+//         [Op.gt]: sixtySecCheck(latestFetch)
+//       }
+//     }
+//   })
+//     .then(events => {
+//       return events.map(event => {
+//         const timeElapsed = event.timeData(latestFetch)
+//         return {
+//           id: event.id,
+//           type: event.type,
+//           timeElapsed
+//         }
+//       })
+//     })
+//     .then(events => {
+//       const response = { events }
+//       const lastTime = (new Date(latestFetch)).getTime()
+//       const updatedTime = (new Date(lastTime + 1000)).toISOString()
+//       response.latestFetch = updatedTime.replace('T', ' ').replace('Z', '') + '+00'
+//       res.json(response)
+//     })
+//     .catch(next)
+// })
 
 router.post('/data', (req, res, next) => {
   const { latestFetch } = req.body

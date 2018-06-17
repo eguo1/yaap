@@ -104,7 +104,7 @@ describe('Client Events routes', () => {
 
     it('also returns a latestFetch string with the object', () => {
       return request(app)
-        .post('/api/events/latest')
+        .post('/api/events/data')
         .send({ latestFetch: fakeTime })
         .expect(200)
         .then(res => {
@@ -113,7 +113,7 @@ describe('Client Events routes', () => {
     })
   })
 
-  describe('POST /api/events/latest', () => {
+  xdescribe('POST /api/events/latest', () => {
     beforeEach(() => {
       return Promise.all(fakeEvents.map(fakeEvent => {
         return ClientEvent.create({...fakeEvent})
@@ -178,7 +178,7 @@ describe('Client Events routes', () => {
           })
       })
     })
-    describe('The above route also', () => {
+    xdescribe('The above route also', () => {
       it('contains a value on each event for number of seconds since timestamp', async () => {
         await ClientEvent.create(fakeEvents[0])
         return request(app)

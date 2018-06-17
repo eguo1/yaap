@@ -4,10 +4,13 @@ const { expect } = require('chai')
 const { ClientEvent } = require('./client_event')
 
 const fakeTime = '2018-06-15 19:50:46.469+00'
-const immediateFutureTime = '2018-06-15 19:51:40.469+00'
-const oneSecFutureTime = '2018-06-15 19:51:54.469+00'
-const tenSecFutureTime = '2018-06-15 20:00:54.469+00'
-const thirtySecFutureTime = '2018-06-15 20:21:04.469+00'
+const fakeFutureTime = {
+  immediate: '2018-06-15 19:51:40.469+00',
+  oneSec: '2018-06-15 19:51:54.469+00',
+  nineSec: '2018-06-15 20:00:45.469+00',
+  tenSec: '2018-06-15 20:00:54.469+00',
+  thirtySec: '2018-06-15 20:21:04.469+00'
+}
 
 const fakeEvents = [{
   type: 'click',
@@ -121,10 +124,11 @@ describe('Client Events model', () => {
       const user = await ClientEvent.findOne({
         where: { userId: 1 }
       })
-      expect(user.timeData(immediateFutureTime)).to.be.equal(0)
-      expect(user.timeData(oneSecFutureTime)).to.be.equal(1)
-      expect(user.timeData(tenSecFutureTime)).to.be.equal(10)
-      expect(user.timeData(thirtySecFutureTime)).to.be.equal(30)
+      expect(user.timeData(fakeFutureTime.immediate)).to.be.equal(0)
+      expect(user.timeData(fakeFutureTime.oneSec)).to.be.equal(1)
+      expect(user.timeData(fakeFutureTime.nineSec)).to.be.equal(9)
+      expect(user.timeData(fakeFutureTime.tenSec)).to.be.equal(10)
+      expect(user.timeData(fakeFutureTime.thirtySec)).to.be.equal(30)
     })
   })
 })

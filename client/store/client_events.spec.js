@@ -6,6 +6,10 @@ import MockAdapter from 'axios-mock-adapter'
 import configureMockStore from 'redux-mock-store'
 import thunkMiddleware from 'redux-thunk'
 
+import {
+  GET_ALL_EVENTS,
+  fetchEventsFromServer } from './client_events'
+
 const mockStore = configureMockStore([thunkMiddleware])
 
 describe('Thunk creators', () => {
@@ -66,4 +70,26 @@ describe('Thunk creators', () => {
     events: [],
     latestFetch: ''
   }
+
+  beforeEach(() => {
+    mockAxios = new MockAdapter(axios)
+    store = mockStore(initialState)
+  })
+
+  afterEach(() => {
+    mockAxios.restore()
+    store.clearActions()
+  })
+
+  describe('fetchEventsFromServer thunk', () => {
+    it('dispatches the GET_ALL_EVENTS thunk', () => {
+      mockAxios.onGet('/api/events').replyOnce(200, fakeEvents)
+      return store.dispatch(fetchEventsFromServer())
+        .then(() => {
+          const actions = store.getActions()
+          expect(actions[0].type).to.be.equal(GET_ALL_EVENTS)
+          expect(actions[0].events).to.be.deep.equal(fakeEvents)
+        })
+    })
+  })
 })

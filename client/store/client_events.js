@@ -2,9 +2,9 @@
 
 import axios from 'axios'
 
-const GET_ALL_EVENTS = 'GET_EVENTS'
-const GET_LATEST_EVENTS = 'GET_LATEST_EVENTS'
-const UPDATE_TIMESTAMP = 'STORE_TIMESTAMP'
+export const GET_ALL_EVENTS = 'GET_EVENTS'
+export const GET_LATEST_EVENTS = 'GET_LATEST_EVENTS'
+export const UPDATE_TIMESTAMP = 'STORE_TIMESTAMP'
 
 const getAllEvents = events => {
   return {
@@ -34,3 +34,20 @@ export const fetchEventsFromServer = () => {
   }
 }
 
+export const eventsReducer = (state = [], action) => {
+  switch (action.type) {
+    case GET_ALL_EVENTS:
+      return [ ...state, ...action.events ]
+    default:
+      return state
+  }
+}
+
+export const latestFetchReducer = (state = '', action) => {
+  switch (action.type) {
+    case UPDATE_TIMESTAMP:
+      return action.latestFetch
+    default:
+      return state
+  }
+}

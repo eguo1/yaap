@@ -3,12 +3,6 @@
 const Sequelize = require('sequelize')
 const { db } = require('../db')
 
-const sixtySecCheck = (timestamp) => {
-  const time = new Date(timestamp)
-  const convertedTime = new Date(time.getTime() - 60000)
-  return convertedTime.toISOString().replace('T', ' ').replace('Z', '') + '+00'
-}
-
 const ClientEvent = db.define('client_event', {
   type: {
     type: Sequelize.STRING
@@ -65,11 +59,16 @@ ClientEvent.prototype.timeData = function (timestamp) {
 }
 
 ClientEvent.returnData = function (timestamp) {
+  const sixtySecCheck = () => {
+    const time = new Date(timestamp)
+    const convertedTime = new Date(time.getTime() - 60000)
+    return convertedTime.toISOString().replace('T', ' ').replace('Z', '') + '+00'
+  }
   return ClientEvent.findAll({
     where: {
       createdAt: {
         [Sequelize.Op.lte]: timestamp,
-        [Sequelize.Op.gt]: sixtySecCheck(timestamp)
+        [Sequelize.Op.gt]: sixtySecCheck()
       }
     }
   }).then(events => {

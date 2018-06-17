@@ -38,6 +38,7 @@ export const fetchLatestEvents = (timestamp) => {
   return async dispatch => {
     const { data } = await axios.post('/api/events/latest', timestamp)
     dispatch(getLatestEvents(data.events))
+    dispatch(updateTimestamp(data.latestFetch))
   }
 }
 

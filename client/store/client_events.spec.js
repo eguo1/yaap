@@ -136,7 +136,7 @@ describe('Thunk creators', () => {
   })
 
   describe('fetchLatestEvents', () => {
-    it('dispatches the GET_LATEST_EVENTS action', () => {
+    it('dispatches the GET_LATEST_EVENTS action with the events array', () => {
       mockAxios.onPost('/api/events/latest', fakeTime)
         .replyOnce(200, { events: fakeEvents, latestFetch: fakeTime })
       return store.dispatch(fetchLatestEvents(fakeTime))
@@ -144,6 +144,17 @@ describe('Thunk creators', () => {
           const actions = store.getActions()
           expect(actions[0].type).to.be.equal(GET_LATEST_EVENTS)
           expect(actions[0].events).to.be.deep.equal(fakeEvents)
+        })
+    })
+
+    it('dispatches the UPDATE_TIMESTAMP action with the latestFetch string', () => {
+      mockAxios.onPost('/api/events/latest', fakeTime)
+        .replyOnce(200, { events: fakeEvents, latestFetch: fakeTime })
+      return store.dispatch(fetchLatestEvents(fakeTime))
+        .then(() => {
+          const actions = store.getActions()
+          expect(actions[1].type).to.be.equal(UPDATE_TIMESTAMP)
+          expect(actions[1].latestFetch).to.be.deep.equal(fakeTime)
         })
     })
   })

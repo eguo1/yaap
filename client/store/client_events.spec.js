@@ -137,7 +137,8 @@ describe('Thunk creators', () => {
 
   describe('fetchLatestEvents', () => {
     it('dispatches the GET_LATEST_EVENTS action', () => {
-      mockAxios.onPost('/api/events/latest', fakeTime).replyOnce(200, fakeEvents)
+      mockAxios.onPost('/api/events/latest', fakeTime)
+        .replyOnce(200, { events: fakeEvents, latestFetch: fakeTime })
       return store.dispatch(fetchLatestEvents(fakeTime))
         .then(() => {
           const actions = store.getActions()

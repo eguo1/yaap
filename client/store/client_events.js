@@ -6,7 +6,7 @@ export const GET_ALL_EVENTS = 'GET_EVENTS'
 export const GET_LATEST_EVENTS = 'GET_LATEST_EVENTS'
 export const UPDATE_TIMESTAMP = 'STORE_TIMESTAMP'
 
-const getAllEvents = events => {
+export const getAllEvents = events => {
   return {
     type: GET_ALL_EVENTS,
     events
@@ -31,6 +31,13 @@ export const fetchEventsFromServer = () => {
   return async dispatch => {
     const { data } = await axios.get('/api/events')
     dispatch(getAllEvents(data))
+  }
+}
+
+export const fetchLatestEvents = (timestamp) => {
+  return async dispatch => {
+    const { data } = await axios.post('/api/events/latest', timestamp)
+    dispatch(getLatestEvents(data))
   }
 }
 

@@ -10,9 +10,11 @@ import {
   GET_ALL_EVENTS,
   UPDATE_TIMESTAMP,
   fetchEventsFromServer,
+  fetchLatestEvents,
   getAllEvents,
   eventsReducer,
-  latestFetchReducer
+  latestFetchReducer,
+  GET_LATEST_EVENTS
 } from './client_events'
 
 const mockStore = configureMockStore([thunkMiddleware])
@@ -67,38 +69,12 @@ const fakeEvents = [{
   userId: 6
 }]
 
+const fakeTime = '2018-06-15 19:50:46.469+00'
+
 const initialState = {
   events: [],
   latestFetch: ''
 }
-
-describe('Thunk creators', () => {
-  let store
-  let mockAxios
-
-  beforeEach(() => {
-    mockAxios = new MockAdapter(axios)
-    store = mockStore(initialState)
-  })
-
-  afterEach(() => {
-    mockAxios.restore()
-    store.clearActions()
-  })
-
-  describe('fetchEventsFromServer thunk', () => {
-    it('dispatches the GET_ALL_EVENTS thunk', () => {
-      mockAxios.onGet('/api/events').replyOnce(200, fakeEvents)
-      return store.dispatch(fetchEventsFromServer())
-        .then(() => {
-          const actions = store.getActions()
-          expect(actions[0].type).to.be.equal(GET_ALL_EVENTS)
-          expect(actions[0].events).to.be.deep.equal(fakeEvents)
-        })
-    })
-  })
-})
-
 
 describe('Events reducer', () => {
   it('should return the initial state', () => {
@@ -120,8 +96,48 @@ describe('latestFetch reducer', () => {
   it('should handle GET_ALL_EVENTS', () => {
     const updateTime = {
       type: UPDATE_TIMESTAMP,
-      latestFetch: '2018-06-15 19:50:46.469+00'
+      latestFetch: fakeTime
     }
-    expect(latestFetchReducer('', updateTime)).to.eql('2018-06-15 19:50:46.469+00')
+    expect(latestFetchReducer('', updateTime)).to.eql(fakeTime)
   })
 })
+
+describe('Thunk creators', () => {
+  let store
+  let mockAxios
+
+  beforeEach(() => {
+    mockAxios = new MockAdapter(axios)
+    store = mockStore(initialState)
+  })
+
+  afterEach(() => {
+    mockAxios.restore()
+    store.clearActions()
+  })
+
+  describe('fetchEventsFromServer', () => {
+    it('dispatches the GET_ALL_EVENTS action', () => {
+      mockAxios.onGet('/api/events').replyOnce(200, fakeEvents)
+      return store.dispatch(fetchEventsFromServer())
+        .then(() => {
+          const actions = store.getActions()
+          expect(actions[0].type).to.be.equal(GET_ALL_EVENTS)
+          expect(actions[0].events).to.be.deep.equal(fakeEvents)
+        })
+    })
+  })
+
+  describe('fetchLatestEvents', () => {
+    it('dispatches the GET_LATEST_EVENTS action', () => {
+      mockAxios.onPost('/api/events/latest', fakeTime).replyOnce(200, fakeEvents)
+      return store.dispatch(fetchLatestEvents(fakeTime))
+        .then(() => {
+          const actions = store.getActions()
+          expect(actions[0].type).to.be.equal(GET_LATEST_EVENTS)
+          expect(actions[0].events).to.be.deep.equal(fakeEvents)
+        })
+    })
+  })
+})
+

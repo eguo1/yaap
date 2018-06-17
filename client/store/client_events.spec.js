@@ -13,7 +13,8 @@ import {
   fetchEventsFromServer,
   fetchLatestEvents,
   eventsReducer,
-  latestFetchReducer
+  latestFetchReducer,
+  latestEventsReducer
 } from './client_events'
 
 const mockStore = configureMockStore([thunkMiddleware])
@@ -72,12 +73,13 @@ const fakeTime = '2018-06-15 19:50:46.469+00'
 
 const initialState = {
   events: [],
-  latestFetch: ''
+  latestFetch: '',
+  latestEvents: []
 }
 
 describe('Events reducer', () => {
   it('should return the initial state', () => {
-    expect(eventsReducer([], 'not-a-valid-action')).to.eql([])
+    expect(eventsReducer([], 'not-a-valid-action')).to.deep.equal([])
   })
 
   it('should handle GET_ALL_EVENTS', () => {
@@ -85,7 +87,7 @@ describe('Events reducer', () => {
       type: GET_ALL_EVENTS,
       events: fakeEvents
     }
-    expect(eventsReducer([], getAction)).to.eql(fakeEvents)
+    expect(eventsReducer([], getAction)).to.deep.equal(fakeEvents)
   })
 
   it('should handle GET_LATEST_EVENTS', () => {
@@ -93,21 +95,35 @@ describe('Events reducer', () => {
       type: GET_LATEST_EVENTS,
       events: fakeEvents
     }
-    expect(eventsReducer([], getAction)).to.eql(fakeEvents)
+    expect(eventsReducer([], getAction)).to.deep.equal(fakeEvents)
   })
 })
 
 describe('latestFetch reducer', () => {
   it('should return the initial state', () => {
-    expect(latestFetchReducer('', 'not-a-valid-action')).to.eql('')
+    expect(latestFetchReducer('', 'not-a-valid-action')).to.deep.equal('')
   })
 
-  it('should handle GET_ALL_EVENTS', () => {
+  it('should handle UPDATE_TIMESTAMP', () => {
     const updateTime = {
       type: UPDATE_TIMESTAMP,
       latestFetch: fakeTime
     }
-    expect(latestFetchReducer('', updateTime)).to.eql(fakeTime)
+    expect(latestFetchReducer('', updateTime)).to.deep.equal(fakeTime)
+  })
+})
+
+describe('latestEvents reducer', () => {
+  it('should return the initial state', () => {
+    expect(latestEventsReducer([], 'not-a-valid-action')).to.deep.equal([])
+  })
+
+  it('should handle GET_LATEST_EVENTS as well', () => {
+    const getLatest = {
+      type: GET_LATEST_EVENTS,
+      events: fakeEvents
+    }
+    expect(latestEventsReducer([], getLatest)).to.deep.equal(fakeEvents)
   })
 })
 

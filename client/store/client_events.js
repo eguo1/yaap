@@ -53,6 +53,15 @@ export const eventsReducer = (state = [], action) => {
   }
 }
 
+export const latestEventsReducer = (state = [], action) => {
+  switch (action.type) {
+    case GET_LATEST_EVENTS:
+      return action.events
+    default:
+      return state
+  }
+}
+
 export const latestFetchReducer = (state = '', action) => {
   switch (action.type) {
     case UPDATE_TIMESTAMP:

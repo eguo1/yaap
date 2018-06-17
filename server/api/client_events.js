@@ -37,7 +37,7 @@ router.post('/latest', (req, res, next) => {
     where: {
       createdAt: {
         [Op.lt]: latestFetch,
-        [Op.gt]: sixtySecCheck(latestFetch)
+        [Op.gte]: sixtySecCheck(latestFetch)
       }
     },
     order: [[ 'createdAt', 'DESC' ]]

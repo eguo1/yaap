@@ -4,12 +4,6 @@ import { expect } from 'chai'
 
 import { UPDATE_EVENT_DATA, eventDataReducer } from './event_data'
 
-const fakeSingleEventData = [{
-  seconds: 52,
-  events: 1
-}]
-
-
 const fakeEventData = [{
   seconds: 52,
   events: 2

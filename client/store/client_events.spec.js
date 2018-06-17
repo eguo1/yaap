@@ -9,12 +9,12 @@ import thunkMiddleware from 'redux-thunk'
 import {
   GET_ALL_EVENTS,
   UPDATE_TIMESTAMP,
+  GET_LATEST_EVENTS,
   fetchEventsFromServer,
   fetchLatestEvents,
   getAllEvents,
   eventsReducer,
-  latestFetchReducer,
-  GET_LATEST_EVENTS
+  latestFetchReducer
 } from './client_events'
 
 const mockStore = configureMockStore([thunkMiddleware])
@@ -83,6 +83,13 @@ describe('Events reducer', () => {
   it('should handle GET_ALL_EVENTS', () => {
     const getAction = {
       type: GET_ALL_EVENTS,
+      events: fakeEvents
+    }
+    expect(eventsReducer([], getAction)).to.eql(fakeEvents)
+  })
+  it('should handle GET_LATEST_EVENTS', () => {
+    const getAction = {
+      type: GET_LATEST_EVENTS,
       events: fakeEvents
     }
     expect(eventsReducer([], getAction)).to.eql(fakeEvents)

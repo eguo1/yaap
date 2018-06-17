@@ -45,6 +45,8 @@ export const eventsReducer = (state = [], action) => {
   switch (action.type) {
     case GET_ALL_EVENTS:
       return [ ...state, ...action.events ]
+    case GET_LATEST_EVENTS:
+      return [ ...state, ...action.events ]
     default:
       return state
   }

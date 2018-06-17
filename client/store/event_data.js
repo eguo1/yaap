@@ -12,23 +12,7 @@ export const updateEventData = eventData => {
 export const eventDataReducer = (state = [], action) => {
   switch (action.type) {
     case UPDATE_EVENT_DATA:
-      const frequencyObj = action.eventData.reduce((result, event) => {
-        if (result[event.timeElapsed]) {
-          result[event.timeElapsed]++
-        } else {
-          result[event.timeElapsed] = 1
-        }
-        return result
-      }, {})
-
-      const resultArr = []
-
-      for (let key in frequencyObj) {
-        if (frequencyObj.hasOwnProperty(key)) {
-          resultArr.push({ seconds: +key, events: frequencyObj[key] })
-        }
-      }
-      return resultArr
+      return action.eventData
     default:
       return state
   }

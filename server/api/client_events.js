@@ -5,11 +5,11 @@ const { Op } = require('sequelize')
 const { ClientEvent } = require('../db/models')
 module.exports = router
 
-const sixtySecCheck = (timestamp) => {
-  const time = new Date(timestamp)
-  const convertedTime = new Date(time.getTime() - 60000)
-  return convertedTime.toISOString().replace('T', ' ').replace('Z', '') + '+00'
-}
+// const sixtySecCheck = (timestamp) => {
+//   const time = new Date(timestamp)
+//   const convertedTime = new Date(time.getTime() - 60000)
+//   return convertedTime.toISOString().replace('T', ' ').replace('Z', '') + '+00'
+// }
 
 router.get('/', (req, res, next) => {
   ClientEvent.findAll()
@@ -28,6 +28,13 @@ router.post('/', (req, res, next) => {
   const ip = req.connection.remoteAddress
   ClientEvent.create({ type, page, target, time, userAgent, userId, ip })
     .then(event => res.status(201).json(event))
+    .catch(next)
+})
+
+router.post('/data', (req, res, next) => {
+  const { latestFetch } = req.body
+  ClientEvent.returnData(latestFetch)
+    .then(result => { res.json(result) })
     .catch(next)
 })
 
@@ -61,10 +68,4 @@ router.post('/', (req, res, next) => {
 //     .catch(next)
 // })
 
-router.post('/data', (req, res, next) => {
-  const { latestFetch } = req.body
-  ClientEvent.returnData(latestFetch)
-    .then(result => { res.json(result) })
-    .catch(next)
-})
 

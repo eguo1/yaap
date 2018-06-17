@@ -30,18 +30,16 @@ router.post('/latest', (req, res, next) => {
   ClientEvent.findAll({
     where: {
       createdAt: {
-        [Op.gt]: latestFetch
+        [Op.lt]: latestFetch
       }
     },
     order: [[ 'createdAt', 'DESC' ]]
   })
     .then(events => {
       const response = { events }
-      if (events.length === 0) {
-        response.latestFetch = latestFetch
-      } else {
-        response.latestFetch = events[0].createdAt
-      }
+      const lastTime = (new Date(latestFetch)).getTime()
+      const updatedTime = (new Date(lastTime + 60000)).toISOString()
+      response.latestFetch = updatedTime.replace('T', ' ').replace('Z', '') + '+00'
       res.json(response)
     })
     .catch(next)

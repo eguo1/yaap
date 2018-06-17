@@ -45,7 +45,7 @@ router.post('/latest', (req, res, next) => {
     .then(events => {
       const response = { events }
       const lastTime = (new Date(latestFetch)).getTime()
-      const updatedTime = (new Date(lastTime + 60000)).toISOString()
+      const updatedTime = (new Date(lastTime + 1000)).toISOString()
       response.latestFetch = updatedTime.replace('T', ' ').replace('Z', '') + '+00'
       res.json(response)
     })

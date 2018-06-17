@@ -52,10 +52,8 @@ describe('Client Events routes', () => {
   })
 
   describe('POST /api/events/latest', () => {
-    beforeEach(() => {
-      return ClientEvent.create(fakeEvent)
-    })
-      it('returns an object with an events array', () => {
+      it('returns an object with an events array', async () => {
+        await ClientEvent.create(fakeEvent)
         return request(app)
           .post('/api/events/latest')
           .send({ latestFetch: '2018-06-15 19:50:46.469+00' })
@@ -67,7 +65,8 @@ describe('Client Events routes', () => {
           })
       })
 
-      it('also returns a latestFetch string with the object', () => {
+      it('also returns a latestFetch string with the object', async () => {
+        await ClientEvent.create(fakeEvent)
         return request(app)
           .post('/api/events/latest')
           .send({ latestFetch: '2018-06-15 19:50:46.469+00' })
@@ -75,6 +74,20 @@ describe('Client Events routes', () => {
           .then(res => {
             expect(res.body).to.be.an('object')
             expect(res.body.latestFetch).to.be.a('string')
+          })
+      })
+
+      it('passes the previous latestFetch value if no instances are found', async () => {
+        return request(app)
+          .post('/api/events/latest')
+          .send({ latestFetch: '2018-06-15 19:50:46.469+00' })
+          .expect(200)
+          .then(res => {
+            expect(res.body).to.be.an('object')
+            expect(res.body.events).to.be.an('array')
+            expect(res.body.events[0]).to.be.equal(undefined)
+            expect(res.body.latestFetch).to.be.a('string')
+            expect(res.body.latestFetch).to.be.equal('2018-06-15 19:50:46.469+00')
           })
       })
     })

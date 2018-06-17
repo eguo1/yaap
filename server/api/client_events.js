@@ -37,7 +37,11 @@ router.post('/latest', (req, res, next) => {
   })
     .then(events => {
       const response = { events }
-      response.latestFetch = events[0].createdAt
+      if (events.length === 0) {
+        response.latestFetch = latestFetch
+      } else {
+        response.latestFetch = events[0].createdAt
+      }
       res.json(response)
     })
     .catch(next)

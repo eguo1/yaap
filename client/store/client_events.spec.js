@@ -79,6 +79,7 @@ describe('Events reducer', () => {
   it('should return the initial state', () => {
     expect(eventsReducer([], 'not-a-valid-action')).to.eql([])
   })
+
   it('should handle GET_ALL_EVENTS', () => {
     const getAction = {
       type: GET_ALL_EVENTS,
@@ -86,6 +87,7 @@ describe('Events reducer', () => {
     }
     expect(eventsReducer([], getAction)).to.eql(fakeEvents)
   })
+
   it('should handle GET_LATEST_EVENTS', () => {
     const getAction = {
       type: GET_LATEST_EVENTS,
@@ -99,6 +101,7 @@ describe('latestFetch reducer', () => {
   it('should return the initial state', () => {
     expect(latestFetchReducer('', 'not-a-valid-action')).to.eql('')
   })
+
   it('should handle GET_ALL_EVENTS', () => {
     const updateTime = {
       type: UPDATE_TIMESTAMP,

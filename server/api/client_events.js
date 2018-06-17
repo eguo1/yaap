@@ -5,6 +5,12 @@ const { Op } = require('sequelize')
 const { ClientEvent } = require('../db/models')
 module.exports = router
 
+const sixtySecCheck = (timestamp) => {
+  const time = new Date(timestamp)
+  const convertedTime = new Date(time.getTime() - 60000)
+  return convertedTime.toISOString().replace('T', ' ').replace('Z', '') + '+00'
+}
+
 router.get('/', (req, res, next) => {
   ClientEvent.findAll()
     .then(events => res.json(events))
@@ -30,7 +36,8 @@ router.post('/latest', (req, res, next) => {
   ClientEvent.findAll({
     where: {
       createdAt: {
-        [Op.lt]: latestFetch
+        [Op.lt]: latestFetch,
+        [Op.gt]: sixtySecCheck(latestFetch)
       }
     },
     order: [[ 'createdAt', 'DESC' ]]

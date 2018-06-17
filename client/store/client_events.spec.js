@@ -12,7 +12,6 @@ import {
   GET_LATEST_EVENTS,
   fetchEventsFromServer,
   fetchLatestEvents,
-  getAllEvents,
   eventsReducer,
   latestFetchReducer
 } from './client_events'
@@ -136,9 +135,12 @@ describe('Thunk creators', () => {
   })
 
   describe('fetchLatestEvents', () => {
-    it('dispatches the GET_LATEST_EVENTS action with the events array', () => {
+    beforeEach(() => {
       mockAxios.onPost('/api/events/latest', fakeTime)
         .replyOnce(200, { events: fakeEvents, latestFetch: fakeTime })
+    })
+
+    it('dispatches the GET_LATEST_EVENTS action with the events array', () => {
       return store.dispatch(fetchLatestEvents(fakeTime))
         .then(() => {
           const actions = store.getActions()
@@ -148,8 +150,6 @@ describe('Thunk creators', () => {
     })
 
     it('dispatches the UPDATE_TIMESTAMP action with the latestFetch string', () => {
-      mockAxios.onPost('/api/events/latest', fakeTime)
-        .replyOnce(200, { events: fakeEvents, latestFetch: fakeTime })
       return store.dispatch(fetchLatestEvents(fakeTime))
         .then(() => {
           const actions = store.getActions()

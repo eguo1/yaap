@@ -6,7 +6,7 @@ export const GET_ALL_EVENTS = 'GET_EVENTS'
 export const GET_LATEST_EVENTS = 'GET_LATEST_EVENTS'
 export const UPDATE_TIMESTAMP = 'STORE_TIMESTAMP'
 
-export const getAllEvents = events => {
+const getAllEvents = events => {
   return {
     type: GET_ALL_EVENTS,
     events

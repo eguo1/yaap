@@ -91,9 +91,11 @@ ClientEvent.returnData = function (timestamp) {
       return result
     }, {})
     const resultArr = []
-    for (let key in frequencyObj) {
-      if (frequencyObj.hasOwnProperty(key)) {
-        resultArr.push({ seconds: +key, events: frequencyObj[key] })
+    for (let i = 0; i < 60; i++) {
+      if (frequencyObj.hasOwnProperty(i+'')) {
+        resultArr.push({ seconds: i, events: frequencyObj[i+''] })
+      } else {
+        resultArr.push({ seconds: i, events: 0 })
       }
     }
     return resultArr

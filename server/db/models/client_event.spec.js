@@ -92,6 +92,7 @@ describe('Client Events model', () => {
     it('returns an object with a data array', async () => {
       const result = await ClientEvent.returnData(fakeFutureTime.oneSec)
       expect(result.data).to.be.an('array')
+      expect(result.data.length).to.be.equal(60)
     })
 
     it('the object also contains a latestFetch string', async () => {

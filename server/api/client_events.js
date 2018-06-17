@@ -39,14 +39,16 @@ router.post('/latest', (req, res, next) => {
         [Op.lte]: latestFetch,
         [Op.gt]: sixtySecCheck(latestFetch)
       }
-    },
-    order: [[ 'createdAt', 'DESC' ]]
+    }
   })
     .then(events => {
       return events.map(event => {
-        event.timeElapsed = event.timeData(latestFetch)
-        console.log(event.timeData(latestFetch))
-        return event
+        const timeElapsed = event.timeData(latestFetch)
+        return {
+          id: event.id,
+          type: event.type,
+          timeElapsed
+        }
       })
     })
     .then(events => {

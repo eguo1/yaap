@@ -129,19 +129,6 @@ describe('Client Events routes', () => {
           })
       })
 
-      it('events contain a value representing the number of seconds since timestamp', () => {
-        return request(app)
-          .post('/api/events/latest')
-          .send({ latestFetch: fakeTime })
-          .expect(200)
-          .then(res => {
-            expect(res.body).to.be.an('object')
-            expect(res.body.events).to.be.an('array')
-            expect(res.body.events.length).to.be.equal(2)
-            expect(res.body.events[0].timeElapsed).to.be.equal(8)
-          })
-      })
-
       it('also returns a latestFetch string with the object', () => {
         return request(app)
           .post('/api/events/latest')
@@ -163,6 +150,19 @@ describe('Client Events routes', () => {
       })
     })
     describe('The above route also', () => {
+      it('contains a value on each event for number of seconds since timestamp', async () => {
+        await ClientEvent.create(fakeEvents[0])
+        return request(app)
+          .post('/api/events/latest')
+          .send({ latestFetch: fakeTime })
+          .expect(200)
+          .then(res => {
+            expect(res.body).to.be.an('object')
+            expect(res.body.events).to.be.an('array')
+            expect(res.body.events.length).to.be.equal(1)
+            expect(res.body.events[0].timeElapsed).to.be.equal(52)
+          })
+      })
       it('increments latestFetch even if no instances are found', () => {
         return request(app)
           .post('/api/events/latest')

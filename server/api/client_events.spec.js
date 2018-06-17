@@ -23,7 +23,7 @@ const fakeEarlierEvent = {
   ip: '1.1.1.1',
   userAgent: 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0',
   userId: 2,
-  createdAt: '2018-06-15 18:50:45.469+00'
+  createdAt: '2018-06-15 19:48:46.469+00'
 }
 
 const fakeTime = '2018-06-15 19:50:46.469+00'
@@ -79,7 +79,22 @@ describe('Client Events routes', () => {
           })
       })
 
-      it('does not return events from over 60 seconds before', async () => {
+      it('does not return events from over 60 seconds prior', async () => {
+        await Promise.all([
+          ClientEvent.create(fakeEvent), ClientEvent.create(fakeEarlierEvent)
+        ])
+        return request(app)
+          .post('/api/events/latest')
+          .send({ latestFetch: fakeTime })
+          .expect(200)
+          .then(res => {
+            expect(res.body).to.be.an('object')
+            expect(res.body.events).to.be.an('array')
+            expect(res.body.events.length).to.be.equal(1)
+          })
+      })
+
+      xit('events contain a value representing the number of seconds since ', async () => {
         await Promise.all([
           ClientEvent.create(fakeEvent), ClientEvent.create(fakeEarlierEvent)
         ])

@@ -54,7 +54,7 @@ ClientEvent.prototype.timeData = function (timestamp) {
   const timeToCheck = new Date(timestamp).getTime()
   const createdTime = new Date(this.createdAt).getTime()
   return Math.floor(
-    ( timeToCheck - createdTime ) / 60000
+    ( timeToCheck - createdTime ) / 1000
   )
 }
 

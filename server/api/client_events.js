@@ -36,12 +36,19 @@ router.post('/latest', (req, res, next) => {
   ClientEvent.findAll({
     where: {
       createdAt: {
-        [Op.lt]: latestFetch,
-        [Op.gte]: sixtySecCheck(latestFetch)
+        [Op.lte]: latestFetch,
+        [Op.gt]: sixtySecCheck(latestFetch)
       }
     },
     order: [[ 'createdAt', 'DESC' ]]
   })
+    .then(events => {
+      return events.map(event => {
+        event.timeElapsed = event.timeData(latestFetch)
+        console.log(event.timeData(latestFetch))
+        return event
+      })
+    })
     .then(events => {
       const response = { events }
       const lastTime = (new Date(latestFetch)).getTime()

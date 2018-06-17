@@ -60,3 +60,11 @@ router.post('/latest', (req, res, next) => {
     })
     .catch(next)
 })
+
+router.post('/data', (req, res, next) => {
+  const { latestFetch } = req.body
+  ClientEvent.returnData(latestFetch)
+    .then(result => { res.json(result) })
+    .catch(next)
+})
+

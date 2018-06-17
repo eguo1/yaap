@@ -74,7 +74,8 @@ const fakeTime = '2018-06-15 19:50:46.469+00'
 const initialState = {
   events: [],
   latestFetch: '',
-  latestEvents: []
+  latestEvents: [],
+  eventData: []
 }
 
 describe('Events reducer', () => {

@@ -5,11 +5,13 @@ import createLogger from 'redux-logger'
 import thunkMiddleware from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { eventsReducer, latestFetchReducer, latestEventsReducer } from './client_events'
+import { eventDataReducer } from './event_data'
 
 const reducer = combineReducers({
   events: eventsReducer,
   latestFetch: latestFetchReducer,
-  latestEvents: latestEventsReducer
+  latestEvents: latestEventsReducer,
+  eventData: eventDataReducer
 })
 
 const middleware = composeWithDevTools(applyMiddleware(

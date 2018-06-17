@@ -32,8 +32,7 @@ router.post('/latest', (req, res, next) => {
       createdAt: {
         [Op.gt]: latestFetch
       }
-    },
-    order: [ [ 'createdAt', 'DESC' ]]
+    }
   })
     .then(events => res.json(events))
     .catch(next)

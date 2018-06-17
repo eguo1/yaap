@@ -3,6 +3,12 @@
 const Sequelize = require('sequelize')
 const { db } = require('../db')
 
+const sixtySecCheck = (timestamp) => {
+  const time = new Date(timestamp)
+  const convertedTime = new Date(time.getTime() - 60000)
+  return convertedTime.toISOString().replace('T', ' ').replace('Z', '') + '+00'
+}
+
 const ClientEvent = db.define('client_event', {
   type: {
     type: Sequelize.STRING
@@ -56,6 +62,48 @@ ClientEvent.prototype.timeData = function (timestamp) {
   return Math.floor(
     ( timeToCheck - createdTime ) / 1000
   )
+}
+
+ClientEvent.returnData = function (timestamp) {
+  return ClientEvent.findAll({
+    where: {
+      createdAt: {
+        [Sequelize.Op.lte]: timestamp,
+        [Sequelize.Op.gt]: sixtySecCheck(timestamp)
+      }
+    }
+  }).then(events => {
+    return events.map(event => {
+      const timeElapsed = event.timeData(timestamp)
+      return {
+        id: event.id,
+        type: event.type,
+        timeElapsed
+      }
+    })
+  }).then(events => {
+    const frequencyObj = events.reduce((result, event) => {
+      if (result[event.timeElapsed]) {
+        result[event.timeElapsed]++
+      } else {
+        result[event.timeElapsed] = 1
+      }
+      return result
+    }, {})
+    const resultArr = []
+    for (let key in frequencyObj) {
+      if (frequencyObj.hasOwnProperty(key)) {
+        resultArr.push({ seconds: +key, events: frequencyObj[key] })
+      }
+    }
+    return resultArr
+  }).then(data => {
+    const response = { data }
+    const lastTime = (new Date(timestamp)).getTime()
+    const updatedTime = (new Date(lastTime + 1000)).toISOString()
+    response.latestFetch = updatedTime.replace('T', ' ').replace('Z', '') + '+00'
+    return response
+  })
 }
 
 module.exports.ClientEvent = ClientEvent

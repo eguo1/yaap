@@ -75,6 +75,31 @@ describe('Client Events model', () => {
     }))
   })
 
+  describe('timeData instance method', () => {
+    it('returns the number of seconds since the timestamp passed in as an argument', async () => {
+      const user = await ClientEvent.findOne({
+        where: { userId: 1 }
+      })
+      expect(user.timeData(fakeFutureTime.immediate)).to.be.equal(0)
+      expect(user.timeData(fakeFutureTime.oneSec)).to.be.equal(1)
+      expect(user.timeData(fakeFutureTime.nineSec)).to.be.equal(9)
+      expect(user.timeData(fakeFutureTime.tenSec)).to.be.equal(10)
+      expect(user.timeData(fakeFutureTime.thirtySec)).to.be.equal(30)
+    })
+  })
+
+  describe('returnData class method', () => {
+    it('returns an object with a data array', async () => {
+      const result = await ClientEvent.returnData(fakeFutureTime.oneSec)
+      expect(result.data).to.be.an('array')
+    })
+
+    it('the object also contains a latestFetch string', async () => {
+      const result = await ClientEvent.returnData(fakeFutureTime.oneSec)
+      expect(result.latestFetch).to.be.an('string')
+    })
+  })
+
   describe('browser method', () => {
     it('returns Firefox if userAgent contains Firefox', async () => {
       const user = await ClientEvent.findOne({
@@ -116,19 +141,6 @@ describe('Client Events model', () => {
         where: { userId: 6 }
       })
       expect(user.browser).to.be.equal('Bot')
-    })
-  })
-
-  describe('timeData method', () => {
-    it('returns the number of seconds since the timestamp passed in as an argument', async () => {
-      const user = await ClientEvent.findOne({
-        where: { userId: 1 }
-      })
-      expect(user.timeData(fakeFutureTime.immediate)).to.be.equal(0)
-      expect(user.timeData(fakeFutureTime.oneSec)).to.be.equal(1)
-      expect(user.timeData(fakeFutureTime.nineSec)).to.be.equal(9)
-      expect(user.timeData(fakeFutureTime.tenSec)).to.be.equal(10)
-      expect(user.timeData(fakeFutureTime.thirtySec)).to.be.equal(30)
     })
   })
 })

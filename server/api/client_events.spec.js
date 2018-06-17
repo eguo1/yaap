@@ -15,6 +15,7 @@ describe('Client Events routes', () => {
       page: '/profile',
       target: 'edit-profile',
       time: Date.now(),
+      ip: '1.1.1.1',
       userAgent: 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0',
       userId: 1
     }
@@ -49,6 +50,18 @@ describe('Client Events routes', () => {
         .then(res => {
           expect(res.body).to.be.an('object')
           expect(res.body.type).to.be.equal('click')
+        })
+    })
+
+    it('POST /api/events/latest returns ', async () => {
+      await ClientEvent.create(fakeEvent)
+      return request(app)
+        .post('/api/events/latest')
+        .send({ latestFetch: '2018-06-15 19:50:46.469+00' })
+        .expect(200)
+        .then(res => {
+          expect(res.body).to.be.an('array')
+          expect(res.body[0].type).to.be.equal('click')
         })
     })
   })

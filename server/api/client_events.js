@@ -1,6 +1,7 @@
 'use strict'
 
 const router = require('express').Router()
+const { Op } = require('sequelize')
 const { ClientEvent } = require('../db/models')
 module.exports = router
 
@@ -21,5 +22,19 @@ router.post('/', (req, res, next) => {
   const ip = req.connection.remoteAddress
   ClientEvent.create({ type, page, target, time, userAgent, userId, ip })
     .then(event => res.status(201).json(event))
+    .catch(next)
+})
+
+router.post('/latest', (req, res, next) => {
+  const { latestFetch } = req.body
+  ClientEvent.findAll({
+    where: {
+      createdAt: {
+        [Op.gt]: latestFetch
+      }
+    },
+    order: [ [ 'createdAt', 'DESC' ]]
+  })
+    .then(events => res.json(events))
     .catch(next)
 })

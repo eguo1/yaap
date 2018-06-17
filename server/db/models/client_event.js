@@ -51,9 +51,10 @@ ClientEvent.hook('beforeValidate', (clientEvent) => {
 })
 
 ClientEvent.prototype.timeData = function (timestamp) {
+  const timeToCheck = new Date(timestamp).getTime()
+  const createdTime = new Date(this.createdAt).getTime()
   return Math.floor(
-    Number(timestamp.slice(14, 19).replace(':', '.')) -
-    Number(this.createdAt.toISOString().slice(14, 19).replace(':', '.'))
+    ( timeToCheck - createdTime ) / 60000
   )
 }
 

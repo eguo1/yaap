@@ -4,11 +4,12 @@ import { createStore, combineReducers, applyMiddleware } from 'redux'
 import createLogger from 'redux-logger'
 import thunkMiddleware from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
-import { latestFetchReducer, eventDataReducer } from './client_events'
+import { latestFetchReducer, eventDataReducer, eventBrowserReducer } from './client_events'
 
 const reducer = combineReducers({
   latestFetch: latestFetchReducer,
-  eventData: eventDataReducer
+  eventData: eventDataReducer,
+  browserData: eventBrowserReducer
 })
 
 const middleware = composeWithDevTools(applyMiddleware(

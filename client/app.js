@@ -1,13 +1,14 @@
 'use strict'
 
 import React from 'react'
-
-import { Visualization } from './components'
+import { Route } from 'react-router-dom'
+import { Visualization, BrowserVisual } from './components'
 
 const App = () => {
   return (
     <div>
-      <Visualization />
+      <Route exact path='/' component={Visualization} />
+      <Route path='/browser' component={BrowserVisual} />
     </div>
   )
 }

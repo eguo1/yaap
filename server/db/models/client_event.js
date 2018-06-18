@@ -77,7 +77,8 @@ ClientEvent.returnData = function (timestamp) {
       return {
         id: event.id,
         type: event.type,
-        timeElapsed
+        timeElapsed,
+        browser: event.browser
       }
     })
   }).then(events => {

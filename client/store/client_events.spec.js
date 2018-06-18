@@ -112,7 +112,7 @@ describe('Thunk creators', () => {
 
   describe('fetchEventData', () => {
     beforeEach(() => {
-      mockAxios.onPost('/api/events/data', fakeTime)
+      mockAxios.onPost('/api/events/data', { latestFetch: fakeTime })
         .replyOnce(200, { eventData: fakeEventData, latestFetch: fakeTime })
     })
 

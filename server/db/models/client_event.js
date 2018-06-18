@@ -29,18 +29,18 @@ const ClientEvent = db.define('client_event', {
   getterMethods: {
     browser () {
       if (this.userAgent.includes('Firefox/')) {
-        return 'Firefox'
+        return 'firefox'
       } else if (this.userAgent.includes('Chrome/') && !this.userAgent.includes('OPR')) {
-        return 'Chrome'
+        return 'chrome'
       } else if (this.userAgent.includes('OPR/')) {
-        return 'Opera'
+        return 'opera'
       } else if (this.userAgent.includes('Safari/') && !this.userAgent.includes('Chrome')) {
-        return 'Safari'
+        return 'safari'
       } else if (this.userAgent.includes('MSIE')) {
-        return 'Internet Explorer'
+        return 'ie'
       } else if (this.userAgent.includes('bot')) {
-        return 'Bot'
-      } else return 'Unknown'
+        return 'bot'
+      } else return 'unknown'
     }
   }
 })
@@ -120,7 +120,7 @@ ClientEvent.returnDataBrowser = function (timestamp) {
     where: {
       createdAt: {
         [Sequelize.Op.lte]: timestamp,
-        [Sequelize.Op.gt]: sixtySecCheck()
+        [Sequelize.Op.gt]: sixtySecCheck(timestamp)
       }
     }
   }).then(events => {
@@ -132,26 +132,42 @@ ClientEvent.returnDataBrowser = function (timestamp) {
       }
     })
   }).then(events => {
-    const arraysOfEvents = events.map()
-  }).
-  then(events => {
-    const frequencyObj = events.reduce((result, event) => {
-      if (result[event.timeElapsed]) {
-        result[event.timeElapsed]++
-      } else {
-        result[event.timeElapsed] = 1
-      }
-      return result
-    }, {})
-    const resultArr = []
-    for (let i = 0; i < 60; i++) {
-      if (frequencyObj.hasOwnProperty(i+'')) {
-        resultArr.push({ seconds: i, events: frequencyObj[i+''] })
-      } else {
-        resultArr.push({ seconds: i, events: 0 })
+    const browserObj = {
+      firefox: [],
+      chrome: [],
+      opera: [],
+      safari: [],
+      ie: [],
+      bot: [],
+      unknown: []
+    }
+    events.forEach(event => {
+      browserObj[event.browser].push(event.timeElapsed)
+    })
+    return browserObj
+  }).then(browsersObj => {
+    for (let key in browsersObj) {
+      if (browsersObj.hasOwnProperty(key)) {
+        const frequencyObj = browsersObj[key].reduce((result, event) => {
+          if (result[event.timeElapsed]) {
+            result[event.timeElapsed]++
+          } else {
+            result[event.timeElapsed] = 1
+          }
+          return result
+        }, {})
+        const resultArr = []
+        for (let i = 0; i < 60; i++) {
+          if (frequencyObj.hasOwnProperty(i+'')) {
+            resultArr.push({ seconds: i, events: frequencyObj[i+''] })
+          } else {
+            resultArr.push({ seconds: i, events: 0 })
+          }
+        }
+        browsersObj[key] = resultArr
       }
     }
-    return resultArr
+    return browsersObj
   }).then(eventData => {
     const response = { eventData }
     response.latestFetch = incrementTime(timestamp)

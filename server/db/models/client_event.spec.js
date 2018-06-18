@@ -106,55 +106,55 @@ describe('Client Events model', () => {
       const user = await ClientEvent.findOne({
         where: { userId: 1 }
       })
-      expect(user.browser).to.be.equal('Firefox')
+      expect(user.browser).to.be.equal('firefox')
     })
 
     it('returns Chrome if userAgent contains Chrome but not OPR', async () => {
       const user = await ClientEvent.findOne({
         where: { userId: 2 }
       })
-      expect(user.browser).to.be.equal('Chrome')
+      expect(user.browser).to.be.equal('chrome')
     })
 
     it('returns Opera if userAgent contains OPR', async () => {
       const user = await ClientEvent.findOne({
         where: { userId: 3 }
       })
-      expect(user.browser).to.be.equal('Opera')
+      expect(user.browser).to.be.equal('opera')
     })
 
     it('returns Safari if userAgent contains Safari but not Chrome', async () => {
       const user = await ClientEvent.findOne({
         where: { userId: 4 }
       })
-      expect(user.browser).to.be.equal('Safari')
+      expect(user.browser).to.be.equal('safari')
     })
 
     it('returns Internet Explorer if userAgent contains MSIE', async () => {
       const user = await ClientEvent.findOne({
         where: { userId: 5 }
       })
-      expect(user.browser).to.be.equal('Internet Explorer')
+      expect(user.browser).to.be.equal('ie')
     })
 
     it('returns Bot if userAgent contains bot', async () => {
       const user = await ClientEvent.findOne({
         where: { userId: 6 }
       })
-      expect(user.browser).to.be.equal('Bot')
+      expect(user.browser).to.be.equal('bot')
     })
   })
 
   describe('returnDataBrowser class method', () => {
     it('returns an object with a data object', async () => {
-      const result = await ClientEvent.returnData(fakeFutureTime.oneSec)
+      const result = await ClientEvent.returnDataBrowser(fakeFutureTime.oneSec)
       expect(result.eventData).to.be.an('object')
       expect(Object.keys(result.eventData).length).to.be.equal(7)
     })
 
     it('each element in data object is an array', async () => {
-      const result = await ClientEvent.returnData(fakeFutureTime.oneSec)
-      expect(result.eventData[0]).to.be.an('array')
+      const result = await ClientEvent.returnDataBrowser(fakeFutureTime.oneSec)
+      expect(result.eventData.ie).to.be.an('array')
     })
 
     it('the object also contains a latestFetch string', async () => {

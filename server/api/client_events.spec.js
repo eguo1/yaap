@@ -57,7 +57,7 @@ describe('Client Events routes', () => {
         .expect(200)
         .then(res => {
           expect(res.body).to.be.an('array')
-          expect(res.body[0].browser).to.be.equal('Firefox')
+          expect(res.body[0].browser).to.be.equal('firefox')
         })
     })
 
@@ -68,7 +68,7 @@ describe('Client Events routes', () => {
         .expect(200)
         .then(res => {
           expect(res.body).to.be.an('object')
-          expect(res.body.browser).to.be.equal('Firefox')
+          expect(res.body.browser).to.be.equal('firefox')
         })
     })
 

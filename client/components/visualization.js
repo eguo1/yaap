@@ -49,6 +49,7 @@ class Visualization extends React.Component {
             data={this.props.eventData}
             barRatio={1.0}
             height={400}
+            width={1000}
             x='seconds'
             y='events'
           />

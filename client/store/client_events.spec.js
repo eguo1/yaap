@@ -9,62 +9,14 @@ import thunkMiddleware from 'redux-thunk'
 import {
   UPDATE_TIMESTAMP,
   UPDATE_EVENT_DATA,
+  UPDATE_BROWSER_DATA,
   fetchEventData,
   eventDataReducer,
+  eventBrowserReducer,
   latestFetchReducer,
 } from './client_events'
 
 const mockStore = configureMockStore([thunkMiddleware])
-
-const fakeEvents = [{
-  type: 'click',
-  page: '/profile',
-  target: 'edit-profile',
-  time: Date.now(),
-  ip: '1.1.1.1',
-  userAgent: 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0',
-  userId: 1
-}, {
-  type: 'click',
-  page: '/profile',
-  target: 'edit-profile',
-  time: Date.now(),
-  ip: '2.1.1.1',
-  userAgent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36',
-  userId: 2
-}, {
-  type: 'click',
-  page: '/profile',
-  target: 'edit-profile',
-  time: Date.now(),
-  ip: '3.1.1.1',
-  userAgent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.106 Safari/537.36 OPR/38.0.2220.41',
-  userId: 3
-}, {
-  type: 'click',
-  page: '/profile',
-  target: 'edit-profile',
-  time: Date.now(),
-  ip: '4.1.1.1',
-  userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1',
-  userId: 4
-}, {
-  type: 'click',
-  page: '/profile',
-  target: 'edit-profile',
-  time: Date.now(),
-  ip: '5.1.1.1',
-  userAgent: 'Mozilla/5.0 (compatible; MSIE 9.0; Windows Phone OS 7.5; Trident/5.0; IEMobile/9.0)',
-  userId: 5
-}, {
-  type: 'click',
-  page: '/',
-  target: 'search',
-  time: Date.now(),
-  ip: '6.1.1.1',
-  userAgent: 'Googlebot/2.1 (+http://www.google.com/bot.html)',
-  userId: 6
-}]
 
 const fakeTime = '2018-06-15 19:50:46.469+00'
 
@@ -106,6 +58,20 @@ describe('eventData reducer', () => {
       eventData: fakeEventData
     }
     expect(eventDataReducer([], updateEventData)).to.deep.equal(fakeEventData)
+  })
+})
+
+describe('eventBrowser reducer', () => {
+  it('should return the initial state', () => {
+    expect(eventBrowserReducer({}, 'not-a-valid-action')).to.deep.equal({})
+  })
+
+  it('should handle UPDATE_EVENT_BROWSER_DATA', () => {
+    const updateEventBrowserData = {
+      type: UPDATE_BROWSER_DATA,
+      browserData: { ie: fakeEventData }
+    }
+    expect(eventBrowserReducer({}, updateEventBrowserData)).to.deep.equal({ ie: fakeEventData })
   })
 })
 

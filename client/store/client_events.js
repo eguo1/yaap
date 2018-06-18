@@ -4,6 +4,7 @@ import axios from 'axios'
 
 export const UPDATE_EVENT_DATA = 'UPDATE_EVENT_DATA'
 export const UPDATE_TIMESTAMP = 'UPDATE_TIMESTAMP'
+export const UPDATE_BROWSER_DATA = 'UPDATE_BROWSER_DATA'
 
 export const updateEventData = eventData => {
   return {
@@ -19,6 +20,13 @@ const updateTimestamp = latestFetch => {
   }
 }
 
+const updateBrowserData = browserData => {
+  return {
+    type: UPDATE_BROWSER_DATA,
+    browserData
+  }
+}
+
 export const fetchEventData = (latestFetch) => {
   return async dispatch => {
     const { data } = await axios.post('/api/events/data', { latestFetch })
@@ -27,10 +35,27 @@ export const fetchEventData = (latestFetch) => {
   }
 }
 
+export const fetchBrowserData = (latestFetch) => {
+  return async dispatch => {
+    const { data } = await axios.post('/api/events/browser', { latestFetch })
+    dispatch(updateBrowserData(data.browserData))
+    dispatch(updateTimestamp(data.latestFetch))
+  }
+}
+
 export const eventDataReducer = (state = [], action) => {
   switch (action.type) {
     case UPDATE_EVENT_DATA:
       return action.eventData
+    default:
+      return state
+  }
+}
+
+export const eventBrowserReducer = (state = {}, action) => {
+  switch (action.type) {
+    case UPDATE_BROWSER_DATA:
+      return action.browserData
     default:
       return state
   }

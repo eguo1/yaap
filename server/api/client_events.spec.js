@@ -113,6 +113,36 @@ describe('Client Events routes', () => {
     })
   })
 
+  describe('POST /api/events/browser', () => {
+    beforeEach(() => {
+      return Promise.all(fakeEvents.map(fakeEvent => {
+        return ClientEvent.create({...fakeEvent})
+      }))
+    })
+
+    it('returns an object with a data array', () => {
+      return request(app)
+        .post('/api/events/browser')
+        .send({ latestFetch: fakeTime })
+        .expect(200)
+        .then(res => {
+          expect(res.body).to.be.an('object')
+          expect(res.body.browserData).to.be.an('object')
+          expect(Object.keys(res.body.browserData).length).to.be.equal(7)
+        })
+    })
+
+    it('also returns a latestFetch string with the object', () => {
+      return request(app)
+        .post('/api/events/browser')
+        .send({ latestFetch: fakeTime })
+        .expect(200)
+        .then(res => {
+          expect(res.body.latestFetch).to.be.a('string')
+        })
+    })
+  })
+
   xdescribe('POST /api/events/latest', () => {
     beforeEach(() => {
       return Promise.all(fakeEvents.map(fakeEvent => {

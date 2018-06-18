@@ -168,8 +168,8 @@ ClientEvent.returnDataBrowser = function (timestamp) {
       }
     }
     return browsersObj
-  }).then(eventData => {
-    const response = { eventData }
+  }).then(browserData => {
+    const response = { browserData }
     response.latestFetch = incrementTime(timestamp)
     return response
   })

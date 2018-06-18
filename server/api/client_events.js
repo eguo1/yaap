@@ -32,6 +32,13 @@ router.post('/data', (req, res, next) => {
     .catch(next)
 })
 
+router.post('/browser', (req, res, next) => {
+  const { latestFetch } = req.body
+  ClientEvent.returnDataBrowser(latestFetch)
+    .then(result => { res.json(result) })
+    .catch(next)
+})
+
 // router.post('/latest', (req, res, next) => {
 //   const { latestFetch } = req.body
 //   ClientEvent.findAll({

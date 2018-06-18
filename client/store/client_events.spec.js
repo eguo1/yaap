@@ -95,6 +95,20 @@ describe('latestFetch reducer', () => {
   })
 })
 
+describe('eventData reducer', () => {
+  it('should return the initial state', () => {
+    expect(eventDataReducer([], 'not-a-valid-action')).to.deep.equal([])
+  })
+
+  it('should handle UPDATE_EVENT_DATA', () => {
+    const updateEventData = {
+      type: UPDATE_EVENT_DATA,
+      eventData: fakeEventData
+    }
+    expect(eventDataReducer([], updateEventData)).to.deep.equal(fakeEventData)
+  })
+})
+
 describe('Thunk creators', () => {
   let store
   let mockAxios

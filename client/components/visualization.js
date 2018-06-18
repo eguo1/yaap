@@ -3,7 +3,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { fetchEventData } from '../store/client_events'
-import { VictoryBar, VictoryChart } from 'victory'
+import {
+  VictoryBar,
+  VictoryChart,
+  VictoryAxis,
+  VictoryTheme
+} from 'victory'
 
 class Visualization extends React.Component {
   constructor (props) {
@@ -29,10 +34,20 @@ class Visualization extends React.Component {
 
   render () {
     return (
-      <div>
+      <div style={{ maxWidth: '30%' }}>
         <h1>Yet Another Analytics Platform</h1>
         <hr />
-        <VictoryChart>
+        <VictoryChart
+          theme={VictoryTheme.material}
+          domainPadding={20}
+        >
+          <VictoryAxis
+            tickValues={[0, 15, 30, 45, 60]}
+          />
+          <VictoryAxis
+            dependentAxis
+            tickValues={[0, 4, 8, 12]}
+          />
           <VictoryBar
             data={this.props.eventData}
             x='seconds'

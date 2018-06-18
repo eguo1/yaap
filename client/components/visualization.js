@@ -42,6 +42,7 @@ class Visualization extends React.Component {
           height={400}
           width={1000}
           domainPadding={50}
+          animate={{ duration: 500 }}
         >
           <VictoryAxis
             tickValues={[0, 15, 30, 45, 60]}
@@ -49,7 +50,7 @@ class Visualization extends React.Component {
           />
           <VictoryAxis
             dependentAxis
-            tickValues={[0, 4, 8, 12]}
+            tickValues={[0, 2, 4, 6, 8, 10]}
           />
           <VictoryBar
             data={this.props.eventData}

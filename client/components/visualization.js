@@ -41,7 +41,6 @@ class Visualization extends React.Component {
           theme={VictoryTheme.material}
           domainPadding={20}
         >
-          <VictoryAxis />
           <VictoryAxis
             dependentAxis
             tickValues={[0, 4, 8, 12]}

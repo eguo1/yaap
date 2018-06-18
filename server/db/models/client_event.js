@@ -58,27 +58,36 @@ ClientEvent.prototype.timeData = function (timestamp) {
   )
 }
 
+const convertTime = (timestamp) => {
+  return timestamp.toISOString().replace('T', ' ').replace('Z', '') + '+00'
+}
+
+const sixtySecCheck = (timestamp) => {
+  const time = new Date(timestamp)
+  const sixtySecAgo = new Date(time.getTime() - 60000)
+  return convertTime(sixtySecAgo)
+}
+
+const incrementTime = (timestamp) => {
+  const previousTime = (new Date(timestamp)).getTime()
+  const incrementedTime = new Date(previousTime + 1000)
+  return convertTime(incrementedTime)
+}
+
 ClientEvent.returnData = function (timestamp) {
-  const sixtySecCheck = () => {
-    const time = new Date(timestamp)
-    const convertedTime = new Date(time.getTime() - 60000)
-    return convertedTime.toISOString().replace('T', ' ').replace('Z', '') + '+00'
-  }
   return ClientEvent.findAll({
     where: {
       createdAt: {
         [Sequelize.Op.lte]: timestamp,
-        [Sequelize.Op.gt]: sixtySecCheck()
+        [Sequelize.Op.gt]: sixtySecCheck(timestamp)
       }
     }
   }).then(events => {
     return events.map(event => {
       const timeElapsed = event.timeData(timestamp)
       return {
-        id: event.id,
         type: event.type,
         timeElapsed,
-        browser: event.browser
       }
     })
   }).then(events => {
@@ -101,9 +110,51 @@ ClientEvent.returnData = function (timestamp) {
     return resultArr
   }).then(eventData => {
     const response = { eventData }
-    const lastTime = (new Date(timestamp)).getTime()
-    const updatedTime = (new Date(lastTime + 1000)).toISOString()
-    response.latestFetch = updatedTime.replace('T', ' ').replace('Z', '') + '+00'
+    response.latestFetch = incrementTime(timestamp)
+    return response
+  })
+}
+
+ClientEvent.returnDataBrowser = function (timestamp) {
+  return ClientEvent.findAll({
+    where: {
+      createdAt: {
+        [Sequelize.Op.lte]: timestamp,
+        [Sequelize.Op.gt]: sixtySecCheck()
+      }
+    }
+  }).then(events => {
+    return events.map(event => {
+      const timeElapsed = event.timeData(timestamp)
+      return {
+        timeElapsed,
+        browser: event.browser
+      }
+    })
+  }).then(events => {
+    const arraysOfEvents = events.map()
+  }).
+  then(events => {
+    const frequencyObj = events.reduce((result, event) => {
+      if (result[event.timeElapsed]) {
+        result[event.timeElapsed]++
+      } else {
+        result[event.timeElapsed] = 1
+      }
+      return result
+    }, {})
+    const resultArr = []
+    for (let i = 0; i < 60; i++) {
+      if (frequencyObj.hasOwnProperty(i+'')) {
+        resultArr.push({ seconds: i, events: frequencyObj[i+''] })
+      } else {
+        resultArr.push({ seconds: i, events: 0 })
+      }
+    }
+    return resultArr
+  }).then(eventData => {
+    const response = { eventData }
+    response.latestFetch = incrementTime(timestamp)
     return response
   })
 }

@@ -101,7 +101,7 @@ describe('Client Events model', () => {
     })
   })
 
-  describe('browser method', () => {
+  describe('browser getter method', () => {
     it('returns Firefox if userAgent contains Firefox', async () => {
       const user = await ClientEvent.findOne({
         where: { userId: 1 }
@@ -142,6 +142,24 @@ describe('Client Events model', () => {
         where: { userId: 6 }
       })
       expect(user.browser).to.be.equal('Bot')
+    })
+  })
+
+  describe('returnDataBrowser class method', () => {
+    it('returns an object with a data object', async () => {
+      const result = await ClientEvent.returnData(fakeFutureTime.oneSec)
+      expect(result.eventData).to.be.an('object')
+      expect(Object.keys(result.eventData).length).to.be.equal(7)
+    })
+
+    it('each element in data object is an array', async () => {
+      const result = await ClientEvent.returnData(fakeFutureTime.oneSec)
+      expect(result.eventData[0]).to.be.an('array')
+    })
+
+    it('the object also contains a latestFetch string', async () => {
+      const result = await ClientEvent.returnData(fakeFutureTime.oneSec)
+      expect(result.latestFetch).to.be.an('string')
     })
   })
 })

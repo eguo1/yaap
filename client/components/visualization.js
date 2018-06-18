@@ -40,11 +40,8 @@ class Visualization extends React.Component {
         <VictoryChart
           theme={VictoryTheme.material}
           domainPadding={20}
-          animate={{ duration: 2000 }}
         >
-          <VictoryAxis
-            tickValues={[0, 15, 30, 45, 60]}
-          />
+          <VictoryAxis />
           <VictoryAxis
             dependentAxis
             tickValues={[0, 4, 8, 12]}

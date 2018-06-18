@@ -39,7 +39,7 @@ class Visualization extends React.Component {
         <hr />
         <VictoryChart
           theme={VictoryTheme.material}
-          height={400}
+          height={500}
           width={1000}
           domainPadding={50}
         >
@@ -49,7 +49,7 @@ class Visualization extends React.Component {
           />
           <VictoryAxis
             dependentAxis
-            tickValues={[0, 3, 6, 9, 12]}
+            tickValues={[0, 4, 8, 12, 16, 20]}
           />
           <VictoryBar
             data={this.props.eventData}

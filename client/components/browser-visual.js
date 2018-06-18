@@ -40,7 +40,7 @@ class BrowserVisual extends React.Component {
         <hr />
         <VictoryChart
           theme={VictoryTheme.material}
-          height={600}
+          height={500}
           width={1000}
           domainPadding={50}
         >
@@ -52,7 +52,9 @@ class BrowserVisual extends React.Component {
             dependentAxis
             tickValues={[0, 4, 8, 12, 16, 20]}
           />
-          <VictoryStack>
+          <VictoryStack
+            colorScale='warm'
+          >
             <VictoryBar
               data={this.props.browserData.chrome}
               barRatio={1.0}

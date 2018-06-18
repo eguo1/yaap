@@ -2,12 +2,12 @@
 
 import React from 'react'
 
-import { Navbar } from './components'
+import { Visualization } from './components'
 
 const App = () => {
   return (
     <div>
-      <Navbar />
+      <Visualization />
     </div>
   )
 }

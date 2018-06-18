@@ -34,13 +34,19 @@ class Visualization extends React.Component {
 
   render () {
     return (
-      <div style={{ maxWidth: '30%' }}>
+      <div style={{ maxWidth: '80%' }}>
         <h1>Yet Another Analytics Platform</h1>
         <hr />
         <VictoryChart
           theme={VictoryTheme.material}
+          height={400}
+          width={1000}
           domainPadding={20}
         >
+          <VictoryAxis
+            tickValues={[0, 15, 30, 45, 60]}
+            tickFormat={['', '', '', '', '']}
+          />
           <VictoryAxis
             dependentAxis
             tickValues={[0, 4, 8, 12]}
@@ -48,8 +54,6 @@ class Visualization extends React.Component {
           <VictoryBar
             data={this.props.eventData}
             barRatio={1.0}
-            height={400}
-            width={1000}
             x='seconds'
             y='events'
           />

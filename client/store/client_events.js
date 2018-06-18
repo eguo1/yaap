@@ -19,9 +19,9 @@ const updateTimestamp = latestFetch => {
   }
 }
 
-export const fetchEventData = (timestamp) => {
+export const fetchEventData = (latestFetch) => {
   return async dispatch => {
-    const { data } = await axios.post('/api/events/data', timestamp)
+    const { data } = await axios.post('/api/events/data', { latestFetch })
     dispatch(updateEventData(data.eventData))
     dispatch(updateTimestamp(data.latestFetch))
   }

@@ -148,11 +148,11 @@ ClientEvent.returnDataBrowser = function (timestamp) {
   }).then(browsersObj => {
     for (let key in browsersObj) {
       if (browsersObj.hasOwnProperty(key)) {
-        const frequencyObj = browsersObj[key].reduce((result, event) => {
-          if (result[event.timeElapsed]) {
-            result[event.timeElapsed]++
+        const frequencyObj = browsersObj[key].reduce((result, timeElapsed) => {
+          if (result[timeElapsed]) {
+            result[timeElapsed]++
           } else {
-            result[event.timeElapsed] = 1
+            result[timeElapsed] = 1
           }
           return result
         }, {})

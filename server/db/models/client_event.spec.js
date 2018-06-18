@@ -155,9 +155,17 @@ describe('Client Events model', () => {
     it('each element in data object is an array', async () => {
       const result = await ClientEvent.returnDataBrowser(fakeFutureTime.oneSec)
       expect(result.eventData.ie).to.be.an('array')
+      expect(result.eventData.ie.length).to.be.equal(60)
     })
 
-    it('the object also contains a latestFetch string', async () => {
+    it('each element in those arrays have two keys', async () => {
+      const result = await ClientEvent.returnDataBrowser(fakeFutureTime.oneSec)
+      expect(result.eventData.ie[0]).to.be.an('object')
+      expect(result.eventData.ie[0].seconds).to.be.equal(0)
+      expect(result.eventData.ie[0].events).to.be.equal(0)
+    })
+
+    it('the response object also contains a latestFetch string', async () => {
       const result = await ClientEvent.returnData(fakeFutureTime.oneSec)
       expect(result.latestFetch).to.be.an('string')
     })

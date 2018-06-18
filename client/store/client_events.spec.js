@@ -7,14 +7,11 @@ import configureMockStore from 'redux-mock-store'
 import thunkMiddleware from 'redux-thunk'
 
 import {
-  GET_ALL_EVENTS,
   UPDATE_TIMESTAMP,
-  GET_LATEST_EVENTS,
-  fetchEventsFromServer,
-  fetchLatestEvents,
-  eventsReducer,
+  UPDATE_EVENT_DATA,
+  fetchEventData,
+  eventDataReducer,
   latestFetchReducer,
-  latestEventsReducer
 } from './client_events'
 
 const mockStore = configureMockStore([thunkMiddleware])
@@ -71,34 +68,18 @@ const fakeEvents = [{
 
 const fakeTime = '2018-06-15 19:50:46.469+00'
 
+const fakeEventData = [{
+  seconds: 52,
+  events: 2
+}, {
+  seconds: 8,
+  events: 1
+}]
+
 const initialState = {
-  events: [],
   latestFetch: '',
-  latestEvents: [],
   eventData: []
 }
-
-describe('Events reducer', () => {
-  it('should return the initial state', () => {
-    expect(eventsReducer([], 'not-a-valid-action')).to.deep.equal([])
-  })
-
-  it('should handle GET_ALL_EVENTS', () => {
-    const getAction = {
-      type: GET_ALL_EVENTS,
-      events: fakeEvents
-    }
-    expect(eventsReducer([], getAction)).to.deep.equal(fakeEvents)
-  })
-
-  it('should handle GET_LATEST_EVENTS', () => {
-    const getAction = {
-      type: GET_LATEST_EVENTS,
-      events: fakeEvents
-    }
-    expect(eventsReducer([], getAction)).to.deep.equal(fakeEvents)
-  })
-})
 
 describe('latestFetch reducer', () => {
   it('should return the initial state', () => {
@@ -111,20 +92,6 @@ describe('latestFetch reducer', () => {
       latestFetch: fakeTime
     }
     expect(latestFetchReducer('', updateTime)).to.deep.equal(fakeTime)
-  })
-})
-
-describe('latestEvents reducer', () => {
-  it('should return the initial state', () => {
-    expect(latestEventsReducer([], 'not-a-valid-action')).to.deep.equal([])
-  })
-
-  it('should handle GET_LATEST_EVENTS as well', () => {
-    const getLatest = {
-      type: GET_LATEST_EVENTS,
-      events: fakeEvents
-    }
-    expect(latestEventsReducer([], getLatest)).to.deep.equal(fakeEvents)
   })
 })
 
@@ -142,35 +109,24 @@ describe('Thunk creators', () => {
     store.clearActions()
   })
 
-  describe('fetchEventsFromServer', () => {
-    it('dispatches the GET_ALL_EVENTS action', () => {
-      mockAxios.onGet('/api/events').replyOnce(200, fakeEvents)
-      return store.dispatch(fetchEventsFromServer())
-        .then(() => {
-          const actions = store.getActions()
-          expect(actions[0].type).to.be.equal(GET_ALL_EVENTS)
-          expect(actions[0].events).to.be.deep.equal(fakeEvents)
-        })
-    })
-  })
 
-  describe('fetchLatestEvents', () => {
+  describe('fetchEventData', () => {
     beforeEach(() => {
-      mockAxios.onPost('/api/events/latest', fakeTime)
-        .replyOnce(200, { events: fakeEvents, latestFetch: fakeTime })
+      mockAxios.onPost('/api/events/data', fakeTime)
+        .replyOnce(200, { eventData: fakeEventData, latestFetch: fakeTime })
     })
 
-    it('dispatches the GET_LATEST_EVENTS action with the events array', () => {
-      return store.dispatch(fetchLatestEvents(fakeTime))
+    it('dispatches the UPDATE_EVENT_DATA action with the events array', () => {
+      return store.dispatch(fetchEventData(fakeTime))
         .then(() => {
           const actions = store.getActions()
-          expect(actions[0].type).to.be.equal(GET_LATEST_EVENTS)
-          expect(actions[0].events).to.be.deep.equal(fakeEvents)
+          expect(actions[0].type).to.be.equal(UPDATE_EVENT_DATA)
+          expect(actions[0].eventData).to.be.deep.equal(fakeEventData)
         })
     })
 
     it('dispatches the UPDATE_TIMESTAMP action with the latestFetch string', () => {
-      return store.dispatch(fetchLatestEvents(fakeTime))
+      return store.dispatch(fetchEventData(fakeTime))
         .then(() => {
           const actions = store.getActions()
           expect(actions[1].type).to.be.equal(UPDATE_TIMESTAMP)

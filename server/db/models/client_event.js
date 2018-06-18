@@ -98,8 +98,8 @@ ClientEvent.returnData = function (timestamp) {
       }
     }
     return resultArr
-  }).then(data => {
-    const response = { data }
+  }).then(eventData => {
+    const response = { eventData }
     const lastTime = (new Date(timestamp)).getTime()
     const updatedTime = (new Date(lastTime + 1000)).toISOString()
     response.latestFetch = updatedTime.replace('T', ' ').replace('Z', '') + '+00'

@@ -36,7 +36,13 @@ export const eventDataReducer = (state = [], action) => {
   }
 }
 
-export const latestFetchReducer = (state = '', action) => {
+const defaultLatestFetch = (
+  new Date(Date.now()))
+    .toISOString()
+    .replace('T', ' ')
+    .replace('Z', '') + '+00'
+
+export const latestFetchReducer = (state = defaultLatestFetch, action) => {
   switch (action.type) {
     case UPDATE_TIMESTAMP:
       return action.latestFetch

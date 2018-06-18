@@ -42,7 +42,6 @@ class Visualization extends React.Component {
           height={400}
           width={1000}
           domainPadding={50}
-          animate={{ duration: 400 }}
         >
           <VictoryAxis
             tickValues={[0, 15, 30, 45, 60]}

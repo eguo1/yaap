@@ -8,8 +8,6 @@ To demo the visualization -
 3. Click on any of the `Add to Cart` buttons on the landing page
 4. (Optional) Visual breakdown by browser available at: https://yet-another-analytics-platform.herokuapp.com/browser
 
-Built with a click event handler on a component in Pet Shop that sends a post request to a backend api route of the deployed YAAP. This data is saved in a PostgreSQL database.
+A click event handler on Pet Shop that sends a post request to an API endpoint of YAAP and the event is logged. Every second, the YAAP client requests an update from its db. The queried data is transformed using Sequelize class/instance methods into a format that the Victory component can interface with.
 
-Every second, YAAP component rendering the Victory bar chart requests an update from the db. The queried data is transformed into a format Victory can interface with through a couple Sequelize class and instance models.
-
-Thanks for reading!
+Thanks for checking it out!

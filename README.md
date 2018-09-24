@@ -1,6 +1,6 @@
 # Yet Another Analytics Platform
 
-A different approach to the analytics engine created by [jmm526](https://github.com/jmm526) for our group project Pet Shop.
+[![Watch a Video Demo Here!](https://img.youtube.com/vi/zjRDirITviM/0.jpg)](https://www.youtube.com/watch?v=zjRDirITviM)
 
 To demo the visualization -
 1. It is deployed on Heroku [here](https://yet-another-analytics-platform.herokuapp.com/)

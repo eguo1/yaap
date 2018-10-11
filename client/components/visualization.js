@@ -34,7 +34,7 @@ class Visualization extends React.Component {
 
   render () {
     return (
-      <div style={{ maxWidth: '80%' }}>
+      <div style={{ maxWidth: '85%' }}>
         <h1>Yet Another Analytics Platform</h1>
         <hr />
         <VictoryChart
